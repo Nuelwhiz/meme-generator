@@ -1,5 +1,6 @@
 import "../App.css";
 import { useEffect, useState } from "react";
+import axios, { Axios } from "axios";
 export default function Main() {
   const [meme, setMeme] = useState({
     topText: "we are open ",
@@ -15,11 +16,17 @@ export default function Main() {
       [name]: value,
     }));
   }
-  useEffect(() => {
+  /* useEffect(() => {
     fetch("https://api.imgflip.com/get_memes")
       .then((res) => res.json())
       .then((data) => setAllMemes(data.data.memes));
+  }, []); */
+  useEffect(() => {
+    axios.get("https://api.imgflip.com/get_memes").then((resp) => {
+      setAllMemes(resp.data.data.memes);
+    });
   }, []);
+
   function getMeme() {
     const randomNumber = Math.floor(Math.random() * allMemes.length);
     const newMemeUrl = allMemes[randomNumber].url;
